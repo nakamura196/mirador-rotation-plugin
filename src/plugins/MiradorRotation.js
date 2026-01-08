@@ -2,12 +2,25 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TuneSharpIcon from '@mui/icons-material/TuneSharp';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import LinearScaleIcon from '@mui/icons-material/LinearScale';
 import { styled, alpha } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import { useElementSize } from '@custom-react-hooks/use-element-size';
 import mergeRefs from 'merge-refs';
-import { MiradorMenuButton, useTranslation } from '@nakamura196/mirador';
+import { MiradorMenuButton, useTranslation } from 'mirador';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Rotation from './Rotation';
-import ReplaySharpIcon from '@mui/icons-material/ReplaySharp';
+
 const SizeContainer = styled('div')(() => ({
   position: 'static !important',
 }));
@@ -55,6 +68,7 @@ const MiradorRotation = ({
   windowId,
 }) => {
   const [isSmallDisplay, setIsSmallDisplay] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const { t } = useTranslation();
 
   const {
@@ -76,6 +90,10 @@ const MiradorRotation = ({
     updateViewport(windowId, viewConfigReset);
   };
 
+  const handleRotate90 = (direction) => {
+    const newRotation = rotation + (direction * 90);
+    updateViewport(windowId, { rotation: newRotation });
+  };
 
   const [sizeRef, size] = useElementSize();
 
@@ -105,6 +123,18 @@ const MiradorRotation = ({
         {open && (
           <>
             <ControlContainer small={isSmallDisplay}>
+              <MiradorMenuButton
+                aria-label={t('rotateLeft')}
+                onClick={() => handleRotate90(-1)}
+              >
+                <RotateLeftIcon />
+              </MiradorMenuButton>
+              <MiradorMenuButton
+                aria-label={t('rotateRight')}
+                onClick={() => handleRotate90(1)}
+              >
+                <RotateRightIcon />
+              </MiradorMenuButton>
               <Rotation
                 label={t('progress')}
                 value={rotation}
@@ -116,10 +146,45 @@ const MiradorRotation = ({
                 aria-label={t('revert')}
                 onClick={handleReset}
               >
-                <ReplaySharpIcon />
+                <RestartAltIcon />
+              </MiradorMenuButton>
+              <MiradorMenuButton
+                aria-label={t('help')}
+                onClick={() => setHelpOpen(true)}
+              >
+                <HelpOutlineIcon />
               </MiradorMenuButton>
             </ControlContainer>
-            
+            <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
+              <DialogTitle sx={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                {t('helpTitle')}
+                <IconButton onClick={() => setHelpOpen(false)} size="small">
+                  <CloseSharpIcon />
+                </IconButton>
+              </DialogTitle>
+              <DialogContent>
+                <Table size="small">
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><RotateLeftIcon /></TableCell>
+                      <TableCell>{t('helpRotateLeft')}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell><RotateRightIcon /></TableCell>
+                      <TableCell>{t('helpRotateRight')}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell><LinearScaleIcon /></TableCell>
+                      <TableCell>{t('helpSlider')}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell><RestartAltIcon /></TableCell>
+                      <TableCell>{t('helpReset')}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </DialogContent>
+            </Dialog>
           </>
         )}
         {!isSmallDisplay && toggleButton}

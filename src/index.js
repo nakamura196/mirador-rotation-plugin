@@ -4,7 +4,7 @@ import {
   getViewer,
   updateViewport,
   updateWindow,
-} from '@nakamura196/mirador';
+} from 'mirador';
 import MiradorRotation from './plugins/MiradorRotation';
 import MiradorRotationMenuItem from './plugins/MiradorRotationMenuItem';
 import translations from './translations';

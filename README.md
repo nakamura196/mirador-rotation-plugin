@@ -17,6 +17,7 @@ Several configuration options are available on windows that use mirador-rotation
 | Configuration     | type    | default | description                   |
 | ----------------- | ------- | ------- | ----------------------------- |
 | `rotationEnabled` | boolean | false   | Enable the plugin to be shown |
+| `rotationOpen`    | boolean | false   | Open the rotation controls by default |
 
 Example configuration:
 
@@ -26,10 +27,52 @@ const config = {
   windows: [
     {
       rotationEnabled: true,
+      rotationOpen: true,
+      initialViewerConfig: {
+        rotation: 90,
+      },
       manifestId: "https://dl.ndl.go.jp/api/iiif/1286201/manifest.json",
     },
   ],
 };
+```
+
+## 🎮 Features
+
+The plugin provides the following rotation controls:
+
+| Control | Description |
+| ------- | ----------- |
+| Rotate Left (90°) | Rotate the image 90 degrees counter-clockwise |
+| Rotate Right (90°) | Rotate the image 90 degrees clockwise |
+| Fine-tuning Slider | Adjust rotation angle in 1-degree increments (-180° to 180°) |
+| Reset | Reset rotation to 0 degrees |
+| Help | Show a dialog explaining how to use the controls |
+
+## 🔗 Demo URL Parameters
+
+The demo page supports the following URL parameters:
+
+| Parameter  | Description | Example |
+| ---------- | ----------- | ------- |
+| `manifest` | IIIF manifest URL(s), separated by `;` for multiple | `?manifest=https://example.com/manifest.json` |
+| `rotation` | Initial rotation angle(s) in degrees, separated by `;` for multiple | `?rotation=90` |
+
+### Examples
+
+Single manifest with rotation:
+```
+?manifest=https://example.com/manifest.json&rotation=180
+```
+
+Multiple manifests with the same rotation:
+```
+?manifest=https://example.com/m1.json;https://example.com/m2.json&rotation=90
+```
+
+Multiple manifests with different rotations:
+```
+?manifest=https://example.com/m1.json;https://example.com/m2.json&rotation=90;180
 ```
 
 ## 📖 Installing `mirador-rotation`

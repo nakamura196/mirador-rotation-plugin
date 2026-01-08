@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TuneSharpIcon from '@mui/icons-material/TuneSharp';
-import { useTranslation } from '@nakamura196/mirador';
+import { useTranslation } from 'mirador';
 
 const MiradorRotationMenuItem = ({
   enabled = true,

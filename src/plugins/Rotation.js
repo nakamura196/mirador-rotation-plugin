@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { MiradorMenuButton } from '@nakamura196/mirador';
+import { MiradorMenuButton } from 'mirador';
 import Slider from '@mui/material/Slider';
 import { styled, alpha } from '@mui/material/styles';
 import LinearScaleIcon from '@mui/icons-material/LinearScale';
@@ -38,8 +38,8 @@ const RotationToggleButton = styled(MiradorMenuButton)(({
 const Rotation = ({
   label, value, windowId, small = false, onChange,
 }) => {
-  const max = 180
-  const min = -180
+  const max = 180;
+  const min = -180;
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -83,15 +83,10 @@ const Rotation = ({
 };
 
 Rotation.propTypes = {
-  children: PropTypes.node.isRequired,
   label: PropTypes.string.isRequired,
-  max: PropTypes.number,
-  min: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   small: PropTypes.bool,
-  type: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
-  variant: PropTypes.string,
   windowId: PropTypes.string.isRequired,
 };
 

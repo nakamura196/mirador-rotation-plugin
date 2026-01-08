@@ -14,39 +14,39 @@ export default defineConfig({
   base: process.env.GITHUB_PAGES ? (process.env.BASE_PATH || '/mirador-rotation-plugin/') : '/',
 
   ...(
-    
+
     process.env.GITHUB_PAGES ? {
       build: {
-        outDir: 'dist',
         emptyOutDir: true,
+        outDir: 'dist',
         rollupOptions: {
           external: ['__tests__/*', '__mocks__/*'],
           input: fileURLToPath(new URL('./demo/src/index.html', import.meta.url)),
         },
         sourcemap: true,
       },
-    } :
-    {
-      build: {
-        lib: {
-          entry: './src/index.js',
-          fileName: (format) => (format === 'umd' ? 'mirador-rotation.js' : 'mirador-rotation.es.js'),
-          formats: ['es', 'umd'],
-          name: 'MiradorDlPlugin',
-        },
-        rollupOptions: {
-          external: [...Object.keys(pkg.peerDependencies || {}), '__tests__/*', '__mocks__/*'],
-          output: {
-            assetFileNames: 'mirador-rotation.[ext]',
-            globals: {
-              react: 'React',
-              'react-dom': 'ReactDOM',
+    }
+      : {
+        build: {
+          lib: {
+            entry: './src/index.js',
+            fileName: (format) => (format === 'umd' ? 'mirador-rotation.js' : 'mirador-rotation.es.js'),
+            formats: ['es', 'umd'],
+            name: 'MiradorDlPlugin',
+          },
+          rollupOptions: {
+            external: [...Object.keys(pkg.peerDependencies || {}), '__tests__/*', '__mocks__/*'],
+            output: {
+              assetFileNames: 'mirador-rotation.[ext]',
+              globals: {
+                react: 'React',
+                'react-dom': 'ReactDOM',
+              },
             },
           },
+          sourcemap: true,
         },
-        sourcemap: true,
-      },
-    }
+      }
   ),
   esbuild: {
     exclude: [],
@@ -74,39 +74,33 @@ export default defineConfig({
     react(),
     // カスタムプラグインを追加してディレクトリ構造を修正
     {
-      name: 'fix-output-structure',
       closeBundle: async () => {
         if (process.env.GITHUB_PAGES) {
           const distDir = path.resolve('dist');
           const demoSrcDir = path.resolve(distDir, 'demo', 'src');
-          
+
           // demo/src/ディレクトリが存在するか確認
           try {
             const demoSrcStats = await fs.stat(demoSrcDir);
             if (demoSrcStats.isDirectory()) {
               console.log('Moving files from demo/src to root directory...');
-              
+
               // demo/src内のファイルリストを取得
               const files = await fs.readdir(demoSrcDir);
-              
-              // 各ファイルをルートディレクトリに移動
-              for (const file of files) {
+
+              // 各ファイルをルートディレクトリに移動（並列処理）
+              const copyPromises = files.map(async (file) => {
                 const srcPath = path.join(demoSrcDir, file);
                 const destPath = path.join(distDir, file);
-                
                 const stats = await fs.stat(srcPath);
                 if (stats.isFile()) {
                   await fs.copyFile(srcPath, destPath);
                   console.log(`Copied: ${srcPath} -> ${destPath}`);
                 }
-              }
-              
+              });
+              await Promise.all(copyPromises);
+
               console.log('Files moved successfully.');
-              
-              // demo/src階層を削除（オプション）
-              // await fs.rm(demoSrcDir, { recursive: true, force: true });
-              // await fs.rm(path.resolve(distDir, 'demo'), { recursive: true, force: true });
-              // console.log('Removed original directory structure.');
             }
           } catch (err) {
             if (err.code !== 'ENOENT') {
@@ -114,8 +108,9 @@ export default defineConfig({
             }
           }
         }
-      }
-    }
+      },
+      name: 'fix-output-structure',
+    },
   ],
   resolve: {
     alias: {
