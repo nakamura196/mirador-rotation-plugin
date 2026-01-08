@@ -62,17 +62,23 @@ UIには2つのボタンを追加：
 | `manifest` | IIIFマニフェストURL | `;`（セミコロン） |
 | `rotation` | 初期回転角度（度） | `;`（セミコロン） |
 
+#### デモページURL
+
+```
+https://nakamura196.github.io/mirador-rotation-plugin/
+```
+
 #### 使用例
 
 ```
 # 単一マニフェスト
-?manifest=https://example.com/manifest.json&rotation=180
+https://nakamura196.github.io/mirador-rotation-plugin/?manifest=https://example.com/manifest.json&rotation=180
 
 # 複数マニフェスト（同じ回転角度）
-?manifest=url1;url2&rotation=90
+https://nakamura196.github.io/mirador-rotation-plugin/?manifest=url1;url2&rotation=90
 
 # 複数マニフェスト（異なる回転角度）
-?manifest=url1;url2&rotation=90;180
+https://nakamura196.github.io/mirador-rotation-plugin/?manifest=url1;url2&rotation=90;180
 ```
 
 #### 実装内容
