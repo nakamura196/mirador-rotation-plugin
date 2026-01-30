@@ -6,6 +6,7 @@ const params = new URLSearchParams(window.location.search);
 const manifestParam = params.get('manifest');
 const rotationParam = params.get('rotation');
 const rotations = rotationParam ? rotationParam.split(';').map(Number) : [];
+const showAttribution = params.get('attribution') === 'true';
 
 // Create windows from manifest parameter or use default
 const createWindows = () => {
@@ -18,6 +19,8 @@ const createWindows = () => {
       manifestId: url,
       rotationEnabled: true,
       rotationOpen: true,
+      sideBarOpen: showAttribution,
+      sideBarPanel: showAttribution ? 'attribution' : undefined,
     }));
   }
 
@@ -46,6 +49,8 @@ const createWindows = () => {
     manifestId: 'https://iiif.dl.itc.u-tokyo.ac.jp/repo/iiif/187cc82d-11e6-9912-9dd4-b4cca9b10970/manifest',
     rotationEnabled: true,
     rotationOpen: true,
+    sideBarOpen: showAttribution,
+    sideBarPanel: showAttribution ? 'attribution' : undefined,
   }];
 };
 
