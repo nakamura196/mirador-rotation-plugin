@@ -53,10 +53,12 @@ The plugin provides the following rotation controls:
 
 The demo page supports the following URL parameters:
 
-| Parameter  | Description | Example |
-| ---------- | ----------- | ------- |
-| `manifest` | IIIF manifest URL(s), separated by `;` for multiple | `?manifest=https://example.com/manifest.json` |
-| `rotation` | Initial rotation angle(s) in degrees, separated by `;` for multiple | `?rotation=90` |
+| Parameter     | Description | Example |
+| ------------- | ----------- | ------- |
+| `manifest`    | IIIF manifest URL(s), separated by `;` for multiple | `?manifest=https://example.com/manifest.json` |
+| `rotation`    | Initial rotation angle(s) in degrees, separated by `;` for multiple | `?rotation=90` |
+| `lang`        | UI language code (e.g., `en`, `ja`, `de`) | `?lang=ja` |
+| `attribution` | Show attribution panel by default when set to `true` | `?attribution=true` |
 
 ### Examples
 

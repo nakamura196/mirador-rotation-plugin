@@ -7,6 +7,7 @@ const manifestParam = params.get('manifest');
 const rotationParam = params.get('rotation');
 const rotations = rotationParam ? rotationParam.split(';').map(Number) : [];
 const showAttribution = params.get('attribution') === 'true';
+const language = params.get('lang') || 'en';
 
 // Create windows from manifest parameter or use default
 const createWindows = () => {
@@ -56,6 +57,7 @@ const createWindows = () => {
 
 const config = {
   id: 'demo',
+  language,
   theme: {
     palette: {
       primary: {
