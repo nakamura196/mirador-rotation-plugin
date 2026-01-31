@@ -16,9 +16,9 @@ const SliderContainer = styled('div')(({ small, theme: { palette } }) => ({
   ...(small && {
     height: 'auto',
     marginBottom: 2,
-    marginTop: -46,
+    marginTop: 48,
     padding: [[4, 2, 4, 2]],
-    right: 48,
+    right: 0,
     top: 'auto',
     width: 150,
   }),
